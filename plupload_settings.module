@@ -1,0 +1,26 @@
+<?php
+
+/*
+ * This will detect if a media player is present and 
+ * select the location of upload.php, flahs and silverlight 
+ * based on whether one has been found or not.
+ */
+
+//get_localserver returns false if there is no media player present
+if (!$mediaPlayer = get_localserver()) {
+  $base_path = base_path();
+  $path = drupal_get_path('module', 'plupload_settings');
+  $flash_url = '$base_path$path/js/Moxie.swf';
+  $silverlight_url = '$base_path$path/js/Moxie.xap';
+}
+else {
+  $base_path = $mediaPlayer[$lan_address] . '/var/isuma/media/';
+  //TODO check what is path for flash & silverlight in media player
+  $flash_url = 'path/to/Moxie.swf';
+  $silverlight_url = 'path/to/Moxie.xap';
+}
+  
+$parameters = array("url" => $base_path$path, "flash" => $flash_url, "silverlight" => $silverlight_url);
+
+//TODO check that this is the actual way to write this
+drupal_alter('plupload_settings', $parameters);
