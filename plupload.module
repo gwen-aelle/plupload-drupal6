@@ -186,6 +186,18 @@ function _plupload_process_resup_elements(&$element, $field) {
     $field_id = str_replace('_', '-', $element['#field_name']);
 
     $plupload_settings = <<<EOD
+
+/*
+ * Work in progress - gaby
+ * may 14th 2015
+ * TODO remove this when work is over
+ */
+$settings = plupload_settings_alter();
+$url = $settings["url"];
+$flash_url = $settings["flash"];
+$silverlight_url = $settings["silverlight"];
+//TODO verify ^^^^^^^
+
 $(function() {
   // Setup html5 version
   $("#uploader-$field_id").pluploadQueue({
