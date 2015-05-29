@@ -185,25 +185,20 @@ function _plupload_process_resup_elements(&$element, $field) {
 
     $field_id = str_replace('_', '-', $element['#field_name']);
 
+    $settings = array("url" => $base_path$path, "flash" => $base_path$path . '/js/Moxie.swf',
+    "silverlight" => $base_path$path . '/js/Moxie.xap');
+    drupal_alter('plupload_settings', $settings); //plupload_settings_alter();
+    $url = $settings["url"];
+    $flash_url = $settings["flash"];
+    $silverlight_url = $settings["silverlight"];
+
     $plupload_settings = <<<EOD
-
-/*
- * Work in progress - gaby
- * may 14th 2015
- * TODO remove this when work is over
- */
-$settings = plupload_settings_alter();
-$url = $settings["url"];
-$flash_url = $settings["flash"];
-$silverlight_url = $settings["silverlight"];
-//TODO verify ^^^^^^^
-
 $(function() {
   // Setup html5 version
   $("#uploader-$field_id").pluploadQueue({
     // General settings
     runtimes : 'html5,flash,silverlight', // can't send sid with html4 runtime
-    url : '$base_path$path/upload.php',
+    url : '$url/upload.php',
     chunk_size: '1mb',
     rename : true,
     dragdrop: true,
@@ -213,8 +208,8 @@ $(function() {
       $stupid_json_comma
       $extensions_setting
     },
-    flash_swf_url : '$base_path$path/js/Moxie.swf',
-    silverlight_xap_url : '$base_path$path/js/Moxie.xap',
+    flash_swf_url : '$flash_url',
+    silverlight_xap_url : '$silverlight_url',
     multipart_params: {
       sid: '$session_id',
       field: '$field_id',
