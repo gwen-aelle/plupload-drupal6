@@ -3,3 +3,8 @@ Prototype implementation of plupload integration with Drupal 6 filefields. For D
 
 Requirements: cck 6.x-2.9, filefield 6.x-3.13, & jquery_update 6.x-2.x-dev configured to use jquery 1.7.
 
+INSTALL
+Whenever you create a content type which uses this module, make sure that in 
+Content type -> Manage fields -> Configure 
+you enable Resumable uploads .
+

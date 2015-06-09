@@ -4,6 +4,7 @@
  * Implementation of hook_field_settings_alter().
  */
 function plupload_field_settings_alter(&$settings, $op, $field) {
+  drupal_debug(get_defined_vars(), 'plupload_field_settings_alter vars');
   $field_type = isset($field['widget_type']) ? $field['widget_type'] : $field['type'];
   if ($field_type != 'filefield') {
     return;
@@ -185,13 +186,15 @@ function _plupload_process_resup_elements(&$element, $field) {
 
     $field_id = str_replace('_', '-', $element['#field_name']);
 
-    $settings = array("url" => $base_path$path, "flash" => $base_path$path . '/js/Moxie.swf',
-    "silverlight" => $base_path$path . '/js/Moxie.xap');
-    drupal_alter('plupload_settings', $settings); //plupload_settings_alter();
-    $url = $settings["url"];
-    $flash_url = $settings["flash"];
-    $silverlight_url = $settings["silverlight"];
 
+    $settings = array(
+                      "url" => $base_path . $path,
+                      "flash" => $base_path . $path . '/js/Moxie.swf',
+                      "silverlight" => $base_path . $path . '/js/Moxie.xap'
+                ); 
+    drupal_alter('plupload_settings', $settings); //plupload_settings_alter();
+    $url = $settings["url_upload_php"];
+    dpm($settings, 'altered plupload settings');
     $plupload_settings = <<<EOD
 $(function() {
   // Setup html5 version
