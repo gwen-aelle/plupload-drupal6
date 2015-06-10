@@ -193,8 +193,7 @@ function _plupload_process_resup_elements(&$element, $field) {
                       "silverlight" => $base_path . $path . '/js/Moxie.xap'
                 ); 
     drupal_alter('plupload_settings', $settings); //plupload_settings_alter();
-    $url = $settings["url_upload_php"];
-    dpm($settings, 'altered plupload settings');
+    $url =  $settings["url"];
     $plupload_settings = <<<EOD
 $(function() {
   // Setup html5 version
