@@ -65,6 +65,10 @@ else {
 // Get a file name
 if (isset($_REQUEST["name"])) {
   $fileName = $_REQUEST["name"];
+  $sessionid = $_REQUEST["sessionid"];
+  $uploadid = $_REQUEST["uploadid"];
+
+//TODO unclear how to access upload & session id
 } elseif (!empty($_FILES)) {
   $fileName = $_FILES["file"]["name"];
 /*
@@ -75,6 +79,9 @@ if (isset($_REQUEST["name"])) {
 
 // Clean the fileName for security reasons
 $fileName = preg_replace('/[^\w\._]+/', '_', $fileName);
+
+// Hash the clean fileName with upload id and session id
+$fileName = hash('md5', $fileName . $sessionid . $uploadid); 
 
 $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 

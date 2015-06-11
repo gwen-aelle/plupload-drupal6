@@ -91,8 +91,14 @@ function plupload_validate(&$element, &$form_state) {
         continue;
       }
       $filename = $_POST[$field_id . '_' . $i . '_name'];
+      $sessionid = $_POST[] //TODO get info from post
+      $uploadid = $_POST[] //TODO get info from post
       // security check (note: changing this requires also changing upload.php)
       $filename = preg_replace('/[^\w\._]+/', '_', $filename);
+
+      // hash filename (note: changing this requires also changing upload.php)
+      $fileName = hash('md5', $fileName . $sessionid . $uploadid);
+
       $filename = $plupload_dir . '/' . $filename;
       $destination_dir = file_directory_path();
       if (isset($widget['file_path'])) {
