@@ -1,0 +1,78 @@
+/**
+ * Implementation of hook_install()
+ */
+function plupload_install() {
+  //Create table
+  drupal_install_schema('plupload_files');
+}
+
+/**
+ * Implementation of hook_schema()
+ */
+function plupload_schema() {
+  $schema['plupload_files'] = array(
+    'description' => 'Stores file information for files uploaded using the plupload module.',
+    'fields' => array(
+
+      'fid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+        'description' => t("The file's {node}.fid."),
+      ),
+
+      'filename' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '0',
+        'description' => t("The file's original name."),
+      ),
+
+      'md5' => array(
+        'type' => 'varchar',
+        //TODO check default length for hashing algo we pick
+        'length' => 2000 //TODO change token value
+        'not null' => FALSE,
+        'default' => NULL,
+        'description' => t("The file's md5sum. Added after the upload is finished."),
+      ),
+
+      //TODO make this primary & unique
+      'uploadid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        //TODO make sure this increments automagically
+        'description' => t("The upload's unique identifier."), 
+      ),
+
+      'uid' => array(
+        'type' => int,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t("The user's id."),
+      );
+
+      'sessionid' => array ( 
+        'type' => int,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t("The session id."),
+      );
+    );
+  );
+
+  return $schema;
+}
+
+/*
+ * Implementation of hook_uninstall()
+ */
+function plupload_uninstall() {
+  //Use schema API to delete database table
+  drupal_uninstall_schema('plupload_files');
+}
