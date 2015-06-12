@@ -52,6 +52,8 @@ $db_url = preg_replace("/\\\$db_url.*=.*'(.*?)'\s*;/", '$1', $db_url);
 $db_url = parse_url($db_url);
 $db_url['path'] = substr($db_url['path'], 1);
 
+/*
+//Moved to a submodule of plupload
 $mysqli = new mysqli($db_url['host'], $db_url['user'], $db_url['pass'], $db_url['path']);
 $result = $mysqli->query("SELECT uid FROM sessions WHERE sid = '$sid'");
 $row = $result->fetch_assoc();
@@ -60,9 +62,9 @@ if ($row && $row['uid'] > 0) {
 }
 else {
   die('{"jsonrpc" : "2.0", "error" : {"code": 107, "message": "Unknown user."}, "id" : "id"}');
-}
+}*/
 
-// Get a file name
+// Get a file name, an uploadid and a session id
 if (isset($_REQUEST["name"])) {
   $fileName = $_REQUEST["name"];
   $sessionid = $_REQUEST["sessionid"];

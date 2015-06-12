@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * Creates a secure token.
+ *
+ * @param array $args
+ *   An array of arguments to create data out of.
+ *   The keys q and secure_token are omitted from the data used.
+ *
+ * @return string
+ *   The base64 HMAC of the data used in args.
+ */
+
+function plupload_create_secure_token($args) {
+  $data = '';
+  foreach ($args as $key => $value) {
+    if ($key === 'q' || $key === 'secure_token') {
+      continue;
+    }
+    $data .= $value;
+  }
+  return drupal_hmac_base64($data,
+    variable_get('seeds_donate_secure_token_key'));
+}
+
+//Get data from upload.php
+$json = file_get_contents();
+$query = json_decode($json, true);
+$sid = $query["sessionid"];
+$uid = $query["uid"];
+
+//Search for user in db
+//TODO get db credentials
+$mysqli = new mysqli($db_url['host'], $db_url['user'], $db_url['pass'], $db_url['path']);
+$result = $mysqli->query("SELECT $uid FROM sessions WHERE sid = '$sid'");
+$row = $result->fetch_assoc();
+if ($row && $row['uid'] > 0) {
+  $userLogged = TRUE;
+}
+else {
+  $userLogged = FALSE;
+}
+
+//Encrypt result of search
+$token = plupload_create_secure_token(array("result" => $userLogged, "sessionid" => $sid, "userid" => $uid));
+
+//Send encrypted result to upload.php
+$token = json_encode($token);

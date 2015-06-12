@@ -1,0 +1,17 @@
+<?php
+
+/**
+* Creates a secure token.
+*
+* @param array $args
+*   An array of arguments to create data out of.
+*   The keys q and secure_token are omitted from the data used.
+*
+* @returns bool
+*   Whether the user exists and is logged in.
+*/
+
+function plupload_check_user_secure_token($args) {
+  
+
+}

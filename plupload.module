@@ -97,7 +97,7 @@ function plupload_validate(&$element, &$form_state) {
       $filename = preg_replace('/[^\w\._]+/', '_', $filename);
 
       // hash filename (note: changing this requires also changing upload.php)
-      $fileName = hash('md5', $fileName . $sessionid . $uploadid);
+      $filename = hash('md5', $filename . $sessionid . $uploadid);
 
       $filename = $plupload_dir . '/' . $filename;
       $destination_dir = file_directory_path();

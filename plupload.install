@@ -3,14 +3,14 @@
  */
 function plupload_install() {
   //Create table
-  drupal_install_schema('plupload_files');
+  drupal_install_schema('plupload_file');
 }
 
 /**
  * Implementation of hook_schema()
  */
 function plupload_schema() {
-  $schema['plupload_files'] = array(
+  $schema['plupload_file'] = array(
     'description' => 'Stores file information for files uploaded using the plupload module.',
     'fields' => array(
 
@@ -74,5 +74,5 @@ function plupload_schema() {
  */
 function plupload_uninstall() {
   //Use schema API to delete database table
-  drupal_uninstall_schema('plupload_files');
+  drupal_uninstall_schema('plupload_file');
 }
