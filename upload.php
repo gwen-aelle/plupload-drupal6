@@ -67,8 +67,8 @@ else {
 // Get a file name, an uploadid and a session id
 if (isset($_REQUEST["name"])) {
   $fileName = $_REQUEST["name"];
-  $sessionid = $_REQUEST["sessionid"];
-  $uploadid = $_REQUEST["uploadid"];
+  $sessionid = $_REQUEST["session_id"];
+  $uploadid = $_REQUEST["upload_id"];
 
 //TODO unclear how to access upload & session id
 } elseif (!empty($_FILES)) {
@@ -144,6 +144,13 @@ while ($buff = fread($in, 4096)) {
 if (!$chunks || $chunk == $chunks - 1) {
   // Strip the temp .part suffix off 
   rename("{$filePath}.part", $filePath);
+
+  /* TODO
+   * If upload on mediaplayer, call plupload.module and:
+   *  Generate a fid in drupal db
+   *  Store fid + hashed filename in plupload_file
+   */
+ 
 }
 
 // Return Success JSON-RPC response

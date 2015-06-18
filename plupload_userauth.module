@@ -46,3 +46,5 @@ $token = plupload_create_secure_token(array("result" => $userLogged, "sessionid"
 
 //Send encrypted result to upload.php
 $token = json_encode($token);
+
+//TODO send $token to mediaplayer

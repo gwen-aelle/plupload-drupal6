@@ -93,6 +93,7 @@ function plupload_validate(&$element, &$form_state) {
       $filename = $_POST[$field_id . '_' . $i . '_name'];
       $sessionid = $_POST[] //TODO get info from post
       $uploadid = $_POST[] //TODO get info from post
+
       // security check (note: changing this requires also changing upload.php)
       $filename = preg_replace('/[^\w\._]+/', '_', $filename);
 
@@ -190,8 +191,22 @@ function _plupload_process_resup_elements(&$element, $field) {
       $stupid_json_comma = ',';
     }
 
-    $field_id = str_replace('_', '-', $element['#field_name']);
+    // Build the plupload_file object
+    $plupload_file_obj = new stdClass();
+    //TODO obtain current filename
+		$plupload_file_obj->filename = $name;
+		$plupload_file_obj->uid = $user->uid;
+		$plupload_file_obj->sessionid = $session_id;
 
+    // Save file to plupload_file table
+    drupal_write_record('plupload_file', $plupload_file_obj);
+
+    // Get uploadid
+    //TODO get db credentials
+    $mysqli = new mysqli($db_url['host'], $db_url['user'], $db_url['pass'], $db_url['path']);
+    $upload_id = $mysqli->query("SELECT $uploadid FROM plupload_file WHERE sessionid = '$session_id'");
+
+    $field_id = str_replace('_', '-', $element['#field_name']);
 
     $settings = array(
                       "url" => $base_path . $path,
@@ -221,6 +236,7 @@ $(function() {
     multipart_params: {
       sid: '$session_id',
       field: '$field_id',
+      uploadid: '$upload_id',
     }
   });
 })(jQuery);

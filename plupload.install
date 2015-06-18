@@ -32,24 +32,21 @@ function plupload_schema() {
 
       'md5' => array(
         'type' => 'varchar',
-        //TODO check default length for hashing algo we pick
-        'length' => 2000 //TODO change token value
+        'length' => 32,
         'not null' => FALSE,
         'default' => NULL,
         'description' => t("The file's md5sum. Added after the upload is finished."),
       ),
 
-      //TODO make this primary & unique
       'uploadid' => array(
         'type' => 'serial',
         'unsigned' => TRUE,
         'not null' => TRUE,
-        //TODO make sure this increments automagically
         'description' => t("The upload's unique identifier."), 
       ),
 
       'uid' => array(
-        'type' => int,
+        'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 0,
@@ -57,7 +54,7 @@ function plupload_schema() {
       );
 
       'sessionid' => array ( 
-        'type' => int,
+        'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 0,
