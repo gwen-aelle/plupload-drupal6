@@ -1,0 +1,80 @@
+1. Hashing
+TIME ESTIMATE: 1 day (8h)
+
+Email Matt: 
+	Le nom du fichier temporaire est configuré avec le variable $fileName
+	dans upload.php; par exemple tu peux voir que j'ai utilisé
+	preg_replace() pour assurer qu'il contient que des caractères [\w._] :
+	https://github.com/m-v-c/plupload-drupal6/blob/master/upload.php#L76-L77
+	
+	À la soumission du formulaire plupload_validate() dans plupload.module
+	cherche le fichier temporaire identifié avec le variable $filename :
+	https://github.com/m-v-c/plupload-drupal6/blob/master/plupload.module#L93-L94
+	
+	Le nom final du fichier est produit par file_move(), qui assure que le
+	nom est unique dans le répertoire des fichiers grâce au paramètre
+	FILE_EXISTS_RENAME :
+	https://github.com/m-v-c/plupload-drupal6/blob/master/plupload.module#L104
+	https://api.drupal.org/api/drupal/includes%21file.inc/function/file_move/6
+
+TODO
+
+  * Store all info in plupload_files table, except for hash + fid (./)
+  * Pass all info for hashing to upload.php (session id, filename, upload id) (./)
+  * Hash filename in upload.php (./)
+  * (perform upload)
+  * If upload on mediaplayer: 
+    * When upload is done, generate a fid (w validate?)
+    * Generate an entry in file table 
+    * Add fid + hash to plupload_file table
+
+2. User authentification
+TIME ESTIMATE: 1 day (8h) 
+
+TODO 
+
+  * Create a sub-module of plupload for isuma side which implements a menu callback 
+    * Menu callback accepts json POST data
+    * Verifies a secure token using a preshared key
+    * Sanitize info (session id) 
+    * Check for user in db
+    * Returns a json response (true/false) + token
+    * Example code:
+    https://redmine.koumbit.net/projects/seeds/repository/revisions/master/entry/modules/custom/seeds_donate/seeds_donate.module
+    line 1088
+  * Upload.php side
+    * Generate token
+    * Call to isuma site w session id + token
+    * Parse result
+
+In doc refer to drupal_hmac
+
+3. Testing
+TIME ESTIMATE: 1 day (10h) ++ much longer when there are unforseen problems  (+ the end of the world
+as we know it)
+
+TODO
+
+  * Test saving node (see #4)
+  * Test multiple files w same name by same user
+    * In one go
+    * Twice in same session
+  * w large files
+
+Check and repeat tests John did 
+See if we could use Behat (tool) for testing (might add days to testing but might help save money in
+the long run)
+
+4. Potential problem with file uploading
+
+When testing, we might find a problem with saving the node 
+
+There might be a constant 'file permanent' in db
+
+TODO
+  * Check if constant exists
+  * See what happen when file finally appears
+
+5. What happens if mediathing doesn't like git-annex? 
+See Antoine
+
